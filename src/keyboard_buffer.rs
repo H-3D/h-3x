@@ -79,6 +79,6 @@ fn scancode_to_char(scancode: u8) -> char {
         0x33 => if unsafe { SHIFT_PRESSED } { '<' } else { ',' },  // Comma
         0x34 => if unsafe { SHIFT_PRESSED } { '>' } else { '.' },  // Period
         0x35 => if unsafe { SHIFT_PRESSED } { '?' } else { '/' },  // Forward slash
-        _ => '?',     // Unknown character
+        _ => '\0',     // Unknown character
     }
 }

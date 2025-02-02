@@ -46,8 +46,9 @@ impl Buffer {
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("booted the h-3x kernel successfully");
-    println!("welcome to the h-3x shell");
+    println!("Booted the h-3x kernel successfully");
+    println!("Welcome to the h-3x shell");
+    println!("Enter 'help' to list all the commands");
     print!("> ");
     let mut buffer = Buffer::new();
     loop {

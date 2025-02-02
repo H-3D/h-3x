@@ -86,6 +86,20 @@ pub extern "C" fn _start() -> ! {
             }
             if input_str == "halt\n" {
                 unsafe {
+                    asm!(
+                        "mov rdi, 0xB8000",
+                        "mov rax, 0x20",
+                        "mov rbx, 0x0F",
+                        "mov rcx, 2000",
+                        "2:",
+                        "mov [rdi], ax",
+                        "add rdi, 2",
+                        "loop 2b",
+                        options(nostack)
+                    );
+                }
+                print!("CPU Halted");
+                unsafe {
                     asm!("hlt");
                 }
                 loop {}

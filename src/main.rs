@@ -12,7 +12,7 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
-const BUFFER_SIZE: usize = 128;
+const BUFFER_SIZE: usize = 79;
 
 struct Buffer {
     buffer: [u8; BUFFER_SIZE],
@@ -56,12 +56,33 @@ pub extern "C" fn _start() -> ! {
         if character != '\0' {
             print!("{}", character);
             buffer.add_char(character as u8);
+            if buffer.index == BUFFER_SIZE - 1{
+                if character != '\n' {
+                    buffer.reset();
+                    print!("> ");
+                }
+            }
         }
         if character == '\n' {
             let input = buffer.get_input();
             let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
+            if input_str == "clear\n" {
+                unsafe {
+                    asm!(
+                        "mov rdi, 0xB8000",
+                        "mov rax, 0x20",
+                        "mov rbx, 0x0F",
+                        "mov rcx, 2000",
+                        "2:",
+                        "mov [rdi], ax",
+                        "add rdi, 2",
+                        "loop 2b",
+                        options(nostack)
+                    );
+                }
+            }
             if input_str == "help\n" {
-                println!("Commands:\nhelp\nhalt");
+                println!("Commands:\nclear\nhalt\nhelp");
             }
             if input_str == "halt\n" {
                 unsafe {

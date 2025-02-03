@@ -12,6 +12,13 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    println!("Booted the h-3x kernel successfully");
+    shell();
+    loop {}
+}
+
 const BUFFER_SIZE: usize = 79;
 
 struct Buffer {
@@ -44,9 +51,7 @@ impl Buffer {
     }
 }
 
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
-    println!("Booted the h-3x kernel successfully");
+pub fn shell() {
     println!("Welcome to the h-3x shell");
     println!("Enter 'help' to list all the commands");
     print!("> ");

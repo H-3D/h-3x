@@ -72,45 +72,45 @@ pub fn shell() {
             let input = buffer.get_input();
             let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
             if input_str == "clear\n" {
-                unsafe {
-                    asm!(
-                        "mov rdi, 0xB8000",
-                        "mov rax, 0x20",
-                        "mov rbx, 0x0F",
-                        "mov rcx, 2000",
-                        "2:",
-                        "mov [rdi], ax",
-                        "add rdi, 2",
-                        "loop 2b",
-                        options(nostack)
-                    );
-                }
-            }
-            if input_str == "help\n" {
-                println!("Commands:\nclear\nhalt\nhelp");
+                clear();
             }
             if input_str == "halt\n" {
-                unsafe {
-                    asm!(
-                        "mov rdi, 0xB8000",
-                        "mov rax, 0x20",
-                        "mov rbx, 0x0F",
-                        "mov rcx, 2000",
-                        "2:",
-                        "mov [rdi], ax",
-                        "add rdi, 2",
-                        "loop 2b",
-                        options(nostack)
-                    );
-                }
-                print!("CPU Halted");
-                unsafe {
-                    asm!("hlt");
-                }
-                loop {}
+                halt();
+            }
+            if input_str == "help\n" {
+                help();
             }
             buffer.reset();
             print!("> ");
         }
     }
+}
+
+pub fn clear() {
+    unsafe {
+        asm!(
+            "mov rdi, 0xB8000",
+            "mov rax, 0x20",
+            "mov rbx, 0x0F",
+            "mov rcx, 2000",
+            "2:",
+            "mov [rdi], ax",
+            "add rdi, 2",
+            "loop 2b",
+            options(nostack)
+        );
+    }
+}
+
+pub fn halt() {
+    clear();
+    print!("CPU Halted");
+    unsafe {
+        asm!("hlt");
+    }
+    loop {}
+}
+
+pub fn help() {
+    println!("Commands:\nclear\nhalt\nhelp");
 }

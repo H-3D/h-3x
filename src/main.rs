@@ -87,6 +87,9 @@ pub fn shell() {
             if input_str == "reboot\n" {
                 reboot();
             }
+            if input_str == "version\n" {
+                version();
+            }
             buffer.reset();
             print!("> ");
         }
@@ -124,11 +127,15 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp\nreboot");
+    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp\nreboot\nversion");
 }
 
 pub fn reboot() {
     unsafe {
         asm!("int 0x19");
     }
+}
+
+pub fn version() {
+    println!("h-3x Kernel v1.0.0-alpha");
 }

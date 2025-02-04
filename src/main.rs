@@ -87,6 +87,9 @@ pub fn shell() {
             if input_str == "reboot\n" {
                 reboot();
             }
+            if input_str == "sleep\n" {
+                sleep();
+            }
             if input_str == "version\n" {
                 version();
             }
@@ -127,13 +130,17 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp\nreboot\nversion");
+    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp\nreboot\nsleep\nversion");
 }
 
 pub fn reboot() {
     unsafe {
         asm!("int 0x19");
     }
+}
+
+pub fn sleep() {
+    for _ in 0..10_000_000 {}
 }
 
 pub fn version() {

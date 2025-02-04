@@ -84,6 +84,9 @@ pub fn shell() {
             if input_str == "help\n" {
                 help();
             }
+            if input_str == "reboot\n" {
+                reboot();
+            }
             buffer.reset();
             print!("> ");
         }
@@ -121,5 +124,11 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp");
+    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp\nreboot");
+}
+
+pub fn reboot() {
+    unsafe {
+        asm!("int 0x19");
+    }
 }

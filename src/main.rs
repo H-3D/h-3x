@@ -74,6 +74,10 @@ pub fn shell() {
             if input_str == "clear\n" {
                 clear();
             }
+            if input_str.starts_with("echo ") {
+                let input = &input_str[5..];
+                echo(input.as_bytes());
+            }
             if input_str == "halt\n" {
                 halt();
             }
@@ -102,6 +106,11 @@ pub fn clear() {
     }
 }
 
+pub fn echo(input: &[u8]) {
+    let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
+    print!("{}", input_str);
+}
+
 pub fn halt() {
     clear();
     print!("CPU Halted");
@@ -112,5 +121,5 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\nclear\nhalt\nhelp");
+    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp");
 }

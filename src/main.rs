@@ -87,6 +87,9 @@ pub fn shell() {
             if input_str == "help\n" {
                 help();
             }
+            if input_str == "info\n" {
+                info();
+            }
             if input_str == "reboot\n" {
                 reboot();
             }
@@ -137,7 +140,14 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nclear\necho [arg ...]\nhalt\nhelp\nreboot\nsleep\nversion");
+    println!("Commands:\narchitecture\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nversion");
+}
+
+pub fn info() {
+    print!("Architecture: ");
+    architecture();
+    print!("Version: ");
+    version();
 }
 
 pub fn reboot() {

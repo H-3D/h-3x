@@ -96,6 +96,9 @@ pub fn shell() {
             if input_str == "sleep\n" {
                 sleep();
             }
+            if input_str == "vendor\n" {
+                vendor();
+            }
             if input_str == "version\n" {
                 version();
             }
@@ -140,12 +143,14 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nversion");
+    println!("Commands:\narchitecture\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nvendor\nversion");
 }
 
 pub fn info() {
     print!("Architecture: ");
     architecture();
+    print!("Vendor: ");
+    vendor();
     print!("Version: ");
     version();
 }
@@ -158,6 +163,41 @@ pub fn reboot() {
 
 pub fn sleep() {
     for _ in 0..10_000_000 {}
+}
+
+pub fn vendor() {
+    let mut regs: [u32; 4] = [0; 4];
+
+    unsafe {
+        asm!(
+            "cpuid",
+            in("eax") 0,
+            lateout("eax") regs[0],
+            lateout("edi") regs[1],
+            lateout("ecx") regs[2],
+            lateout("edx") regs[3],
+        );
+    }
+
+    let vendor = [
+        (regs[1] & 0xFF) as u8,
+        ((regs[1] >> 8) & 0xFF) as u8,
+        ((regs[1] >> 16) & 0xFF) as u8,
+        ((regs[1] >> 24) & 0xFF) as u8,
+        (regs[3] & 0xFF) as u8,
+        ((regs[3] >> 8) & 0xFF) as u8,
+        ((regs[3] >> 16) & 0xFF) as u8,
+        ((regs[3] >> 24) & 0xFF) as u8,
+        (regs[2] & 0xFF) as u8,
+        ((regs[2] >> 8) & 0xFF) as u8,
+        ((regs[2] >> 16) & 0xFF) as u8,
+        ((regs[2] >> 24) & 0xFF) as u8,
+    ];
+
+    for &byte in &vendor {
+        print!("{}", byte as char);
+    }
+    print!("{}", '\n');
 }
 
 pub fn version() {

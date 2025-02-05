@@ -71,6 +71,9 @@ pub fn shell() {
         if character == '\n' {
             let input = buffer.get_input();
             let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
+            if input_str == "architecture\n" {
+                architecture();
+            }
             if input_str == "clear\n" {
                 clear();
             }
@@ -97,6 +100,10 @@ pub fn shell() {
             print!("> ");
         }
     }
+}
+
+pub fn architecture() {
+    println!("x86_64");
 }
 
 pub fn clear() {
@@ -130,7 +137,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\nclear\necho [arg ...]\nhalt\nhelp\nreboot\nsleep\nversion");
+    println!("Commands:\narchitecture\nclear\necho [arg ...]\nhalt\nhelp\nreboot\nsleep\nversion");
 }
 
 pub fn reboot() {

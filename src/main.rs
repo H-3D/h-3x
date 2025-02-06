@@ -99,6 +99,9 @@ pub fn shell() {
             if input_str == "sleep\n" {
                 sleep();
             }
+            if input_str == "uptime\n" {
+                uptime();
+            }
             if input_str == "vendor\n" {
                 vendor();
             }
@@ -150,7 +153,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -158,6 +161,8 @@ pub fn info() {
     architecture();
     print!("Bootloader: ");
     bootloader();
+    print!("Uptime: ");
+    uptime();
     print!("Vendor: ");
     vendor();
     print!("Version: ");
@@ -172,6 +177,19 @@ pub fn reboot() {
 
 pub fn sleep() {
     for _ in 0..10_000_000 {}
+}
+
+pub fn uptime() {
+    let mut tsc: u64;
+    unsafe {
+        asm!(
+            "rdtsc",
+            out("eax") _,
+            out("edx") tsc,
+            options(nostack, preserves_flags)
+        );
+    }
+    println!("{} cycles", tsc);
 }
 
 pub fn vendor() {

@@ -74,6 +74,9 @@ pub fn shell() {
             if input_str == "architecture\n" {
                 architecture();
             }
+            if input_str == "bootloader\n" {
+                bootloader();
+            }
             if input_str == "clear\n" {
                 clear();
             }
@@ -112,6 +115,10 @@ pub fn architecture() {
     println!("x86_64");
 }
 
+pub fn bootloader() {
+    println!("rust bootimage-generated bootloader");
+}
+
 pub fn clear() {
     unsafe {
         asm!(
@@ -143,12 +150,14 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nvendor\nversion");
 }
 
 pub fn info() {
     print!("Architecture: ");
     architecture();
+    print!("Bootloader: ");
+    bootloader();
     print!("Vendor: ");
     vendor();
     print!("Version: ");

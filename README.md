@@ -1,4 +1,4 @@
-# H-3X: Operating System Kernel in Rust
+# H-3X
 
 H-3X is a Rust-based operating system kernel featuring a basic shell with commands for system info, screen clearing, and rebooting.
 

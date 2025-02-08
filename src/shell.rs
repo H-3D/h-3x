@@ -35,9 +35,6 @@ impl Buffer {
 }
 
 pub fn shell() {
-    println!("Welcome to the h-3x shell");
-    println!("Enter 'help' to list all the commands");
-    println!("Enter 'manual' to display the system manual");
     print!("> ");
     let mut buffer = Buffer::new();
     loop {
@@ -85,6 +82,10 @@ pub fn shell() {
             }
             if input_str == "sleep\n" {
                 sleep();
+            }
+            if input_str == "time\n" {
+                buffer.reset();
+                return;
             }
             if input_str == "uptime\n" {
                 uptime();
@@ -140,7 +141,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -148,8 +149,6 @@ pub fn info() {
     architecture();
     print!("Bootloader: ");
     bootloader();
-    print!("Uptime: ");
-    uptime();
     print!("Vendor: ");
     vendor();
     print!("Version: ");
@@ -157,16 +156,18 @@ pub fn info() {
 }
 
 pub fn manual() {
-    println!("architecture: Displays the system architecture (x86_64).
+    println!("Commands:
+architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (rust bootimage-generated).
 clear: Clears the screen.
 echo [message]: Echoes a message.
 halt: Halts the CPU.
 help: Lists all available commands.
-info: Displays system information (architecture, bootloader, uptime, vendor, version).
+info: Displays system information (architecture, bootloader, vendor, version).
 manual: Displays the system manual.
 reboot: Reboots the system.
 sleep: Sleeps for a set duration (for testing purposes).
+time: Sends a system call to the kernel to display the Real Time Clock.
 uptime: Displays the system uptime in cycles.
 vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
@@ -227,7 +228,7 @@ pub fn vendor() {
     for &byte in &vendor {
         print!("{}", byte as char);
     }
-    print!("{}", '\n');
+    println!();
 }
 
 pub fn version() {

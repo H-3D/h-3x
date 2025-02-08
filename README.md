@@ -13,6 +13,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
   - `halt`: Halts the CPU.
   - `help`: Lists all available commands.
   - `info`: Displays system information (architecture, bootloader, uptime, vendor, version).
+  - `manual`: Displays the system manual.
   - `reboot`: Reboots the system.
   - `sleep`: Sleeps for a set duration (for testing purposes).
   - `uptime`: Displays the system uptime in cycles.

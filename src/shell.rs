@@ -37,6 +37,7 @@ impl Buffer {
 pub fn shell() {
     println!("Welcome to the h-3x shell");
     println!("Enter 'help' to list all the commands");
+    println!("Enter 'manual' to display the system manual");
     print!("> ");
     let mut buffer = Buffer::new();
     loop {
@@ -75,6 +76,9 @@ pub fn shell() {
             }
             if input_str == "info\n" {
                 info();
+            }
+            if input_str == "manual\n" {
+                manual();
             }
             if input_str == "reboot\n" {
                 reboot();
@@ -136,7 +140,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\necho [arg ...]\nhalt\nhelp\ninfo\nreboot\nsleep\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -150,6 +154,22 @@ pub fn info() {
     vendor();
     print!("Version: ");
     version();
+}
+
+pub fn manual() {
+    println!("architecture: Displays the system architecture (x86_64).
+bootloader: Information about the bootloader (rust bootimage-generated).
+clear: Clears the screen.
+echo [message]: Echoes a message.
+halt: Halts the CPU.
+help: Lists all available commands.
+info: Displays system information (architecture, bootloader, uptime, vendor, version).
+manual: Displays the system manual.
+reboot: Reboots the system.
+sleep: Sleeps for a set duration (for testing purposes).
+uptime: Displays the system uptime in cycles.
+vendor: Displays CPU vendor string.
+version: Displays the kernel version.");
 }
 
 pub fn reboot() {

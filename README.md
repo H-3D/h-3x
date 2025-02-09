@@ -5,6 +5,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
 ## Features
 
 - **Basic Shell**: A simple command-line interface to interact with the kernel.
+- **RTC System Call**: A system call that prints the Real Time Clock in UTC.
 - **Commands**:
   - `architecture`: Displays the system architecture (x86_64).
   - `bootloader`: Information about the bootloader (rust bootimage-generated).

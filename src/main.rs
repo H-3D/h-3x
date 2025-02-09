@@ -9,6 +9,8 @@ mod vga_buffer;
 mod keyboard_buffer;
 mod shell;
 
+pub static mut SYSTEM_CALL: u64 = 0;
+
 const RTC_PORT_INDEX: u16 = 0x70;
 const RTC_PORT_DATA: u16 = 0x71;
 
@@ -25,8 +27,15 @@ pub extern "C" fn _start() -> ! {
     println!("Enter 'manual' to display the system manual");
     loop {
         shell::shell();
-        let time = time();
-        println!("UTC: {}", time);
+        unsafe {
+            if SYSTEM_CALL == 0 {
+                let time = time();
+                println!("UTC: {}", time);
+            }
+            if SYSTEM_CALL == 1 {
+                uptime();
+            }
+        }
     }
 }
 
@@ -73,4 +82,17 @@ unsafe fn inb(port: u16) -> u8 {
     let value: u8;
     asm!("in al, dx", in("dx") port, out("al") value);
     value
+}
+
+pub fn uptime() {
+    let mut tsc: u64;
+    unsafe {
+        asm!(
+            "rdtsc",
+            out("eax") _,
+            out("edx") tsc,
+            options(nostack, preserves_flags)
+        );
+    }
+    println!("{} cycles", tsc);
 }

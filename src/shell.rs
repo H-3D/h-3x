@@ -1,5 +1,5 @@
 use core::arch::asm;
-use crate::{print, println};
+use crate::{print, println, SYSTEM_CALL};
 use crate::keyboard_buffer;
 
 const BUFFER_SIZE: usize = 79;
@@ -84,11 +84,16 @@ pub fn shell() {
                 sleep();
             }
             if input_str == "time\n" {
-                buffer.reset();
+                unsafe {
+                    SYSTEM_CALL = 0;
+                }
                 return;
             }
             if input_str == "uptime\n" {
-                uptime();
+                unsafe {
+                    SYSTEM_CALL = 1;
+                }
+                return;
             }
             if input_str == "vendor\n" {
                 vendor();
@@ -181,19 +186,6 @@ pub fn reboot() {
 
 pub fn sleep() {
     for _ in 0..10_000_000 {}
-}
-
-pub fn uptime() {
-    let mut tsc: u64;
-    unsafe {
-        asm!(
-            "rdtsc",
-            out("eax") _,
-            out("edx") tsc,
-            options(nostack, preserves_flags)
-        );
-    }
-    println!("{} cycles", tsc);
 }
 
 pub fn vendor() {

@@ -173,7 +173,7 @@ manual: Displays the system manual.
 reboot: Reboots the system.
 sleep: Sleeps for a set duration (for testing purposes).
 time: Sends a system call to the kernel to display the Real Time Clock.
-uptime: Displays the system uptime in cycles.
+uptime: Sends a system call to the kernel to display the system uptime in cycles.
 vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
 }

@@ -6,6 +6,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
 
 - **Basic Shell**: A simple command-line interface to interact with the kernel.
 - **RTC System Call**: A system call that prints the Real Time Clock in UTC.
+- **Uptime System Call**: A system call that prints the device uptime.
 - **Commands**:
   - `architecture`: Displays the system architecture (x86_64).
   - `bootloader`: Information about the bootloader (rust bootimage-generated).
@@ -18,7 +19,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
   - `reboot`: Reboots the system.
   - `sleep`: Sleeps for a set duration (for testing purposes).
   - `time`: Sends a system call to the kernel to display the Real Time Clock.
-  - `uptime`: Displays the system uptime in cycles.
+  - `uptime`: Sends a system call to the kernel to display the system uptime in cycles.
   - `vendor`: Displays CPU vendor string.
   - `version`: Displays the kernel version.
 

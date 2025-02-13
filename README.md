@@ -12,6 +12,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
   - `bootloader`: Information about the bootloader (rust bootimage-generated).
   - `clear`: Clears the screen.
   - `echo [message]`: Echoes a message.
+  - `flix`: Ephemeral Text Editor
   - `halt`: Halts the CPU.
   - `help`: Lists all available commands.
   - `info`: Displays system information (architecture, bootloader, vendor, version).
@@ -19,7 +20,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
   - `reboot`: Reboots the system.
   - `sleep`: Sleeps for a set duration (for testing purposes).
   - `time`: Sends a system call to the kernel to display the Real Time Clock.
-  - `uptime`: Sends a system call to the kernel to display the system uptime in cycles.
+  - `uptime`: Sends a system call to the kernel to display the system uptime.
   - `vendor`: Displays CPU vendor string.
   - `version`: Displays the kernel version.
 

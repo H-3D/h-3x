@@ -65,6 +65,9 @@ pub fn shell() {
                 let input = &input_str[5..];
                 echo(input.as_bytes());
             }
+            if input_str == "flix\n" {
+                flix();
+            }
             if input_str == "halt\n" {
                 halt();
             }
@@ -136,6 +139,21 @@ pub fn echo(input: &[u8]) {
     print!("{}", input_str);
 }
 
+pub fn flix() {
+    clear();
+    loop {
+        let character = keyboard_buffer::read_char();
+        if character == '\\' {
+            break;
+        }
+        if character != '\0' {
+            print!("{}", character);
+        }
+    }
+    clear();
+    println!();
+}
+
 pub fn halt() {
     clear();
     print!("CPU Halted");
@@ -146,7 +164,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nflix\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -166,6 +184,7 @@ architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (rust bootimage-generated).
 clear: Clears the screen.
 echo [message]: Echoes a message.
+flix: Ephemeral Text Editor
 halt: Halts the CPU.
 help: Lists all available commands.
 info: Displays system information (architecture, bootloader, vendor, version).
@@ -173,7 +192,7 @@ manual: Displays the system manual.
 reboot: Reboots the system.
 sleep: Sleeps for a set duration (for testing purposes).
 time: Sends a system call to the kernel to display the Real Time Clock.
-uptime: Sends a system call to the kernel to display the system uptime in cycles.
+uptime: Sends a system call to the kernel to display the system uptime.
 vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
 }

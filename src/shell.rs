@@ -146,7 +146,11 @@ pub fn flix() {
         if character == '\\' {
             break;
         }
-        if character != '\0' {
+        if character == '/' {
+            clear();
+            println!();
+        }
+        if character != '\0' && character != '/' {
             print!("{}", character);
         }
     }

@@ -1,3 +1,5 @@
+#[warn(static_mut_refs)]
+
 use core::arch::asm;
 use crate::{print, println, SYSTEM_CALL, FILE};
 use crate::keyboard_buffer;

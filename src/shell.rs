@@ -1,8 +1,11 @@
 use core::arch::asm;
-use crate::{print, println, SYSTEM_CALL};
+use crate::{print, println, SYSTEM_CALL, FILE};
 use crate::keyboard_buffer;
 
 const BUFFER_SIZE: usize = 79;
+const VGA_BUFFER: *mut u16 = 0xB8000 as *mut u16;
+const VGA_WIDTH: usize = 80;
+const VGA_HEIGHT: usize = 25;
 
 struct Buffer {
     buffer: [u8; BUFFER_SIZE],
@@ -141,9 +144,13 @@ pub fn echo(input: &[u8]) {
 
 pub fn flix() {
     clear();
+    unsafe {
+        print!("{}", core::str::from_utf8_unchecked(FILE));
+    }
     loop {
         let character = keyboard_buffer::read_char();
         if character == '\\' {
+            screen();
             break;
         }
         if character == '/' {
@@ -156,6 +163,20 @@ pub fn flix() {
     }
     clear();
     println!();
+}
+
+pub fn screen() {
+    static mut VGA: [u8; VGA_WIDTH * VGA_HEIGHT] = [0; VGA_WIDTH * VGA_HEIGHT];
+    unsafe {
+        for row in 0..VGA_HEIGHT {
+            for col in 0..VGA_WIDTH {
+                let index = row * VGA_WIDTH + col;
+                let char_cell = *VGA_BUFFER.offset(index as isize);
+                VGA[index] = (char_cell & 0xFF) as u8;
+            }
+        }
+        FILE = &VGA;
+    }
 }
 
 pub fn halt() {
@@ -188,7 +209,7 @@ architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (rust bootimage-generated).
 clear: Clears the screen.
 echo [message]: Echoes a message.
-flix: Ephemeral Text Editor
+flix: Buffer Text Editor
 halt: Halts the CPU.
 help: Lists all available commands.
 info: Displays system information (architecture, bootloader, vendor, version).

@@ -12,7 +12,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
   - `bootloader`: Information about the bootloader (rust bootimage-generated).
   - `clear`: Clears the screen.
   - `echo [message]`: Echoes a message.
-  - `flix`: Ephemeral Text Editor
+  - `flix`: Buffer Text Editor
   - `halt`: Halts the CPU.
   - `help`: Lists all available commands.
   - `info`: Displays system information (architecture, bootloader, vendor, version).

@@ -10,6 +10,7 @@ mod keyboard_buffer;
 mod shell;
 
 pub static mut SYSTEM_CALL: u64 = 0;
+static mut FILE: &[u8] = b"";
 
 const RTC_PORT_INDEX: u16 = 0x70;
 const RTC_PORT_DATA: u16 = 0x71;

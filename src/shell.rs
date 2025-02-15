@@ -268,5 +268,5 @@ pub fn vendor() {
 }
 
 pub fn version() {
-    println!("h-3x Kernel v1.0.0-alpha");
+    println!("h-3x Kernel v1.0.0-beta");
 }

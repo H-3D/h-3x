@@ -30,8 +30,7 @@ pub extern "C" fn _start() -> ! {
         shell::shell();
         unsafe {
             if SYSTEM_CALL == 0 {
-                let time = time();
-                println!("UTC: {}", time);
+                time();
             }
             if SYSTEM_CALL == 1 {
                 uptime();
@@ -56,7 +55,7 @@ fn bcd_to_decimal(bcd: u8) -> u8 {
     ((bcd >> 4) * 10) + (bcd & 0x0F)
 }
 
-fn time() -> Time {
+fn time() {
     unsafe {
         outb(RTC_PORT_INDEX, 0x00);
         let bcd_seconds = inb(RTC_PORT_DATA);
@@ -67,11 +66,13 @@ fn time() -> Time {
         outb(RTC_PORT_INDEX, 0x04);
         let bcd_hours = inb(RTC_PORT_DATA);
 
-        Time {
+        let time = Time {
             seconds: bcd_to_decimal(bcd_seconds),
             minutes: bcd_to_decimal(bcd_minutes),
             hours: bcd_to_decimal(bcd_hours),
-        }
+        };
+        
+        println!("UTC: {}", time);
     }
 }
 

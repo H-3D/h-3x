@@ -73,6 +73,9 @@ pub fn shell() {
             if input_str == "flix\n" {
                 flix();
             }
+            if input_str == "flox\n" {
+                flox();
+            }
             if input_str == "halt\n" {
                 halt();
             }
@@ -181,6 +184,25 @@ pub fn screen() {
     }
 }
 
+pub fn flox() {
+    clear();
+    loop {
+        let character = keyboard_buffer::read_char();
+        if character == '\\' {
+            break;
+        }
+        if character == '/' {
+            clear();
+            println!();
+        }
+        if character != '\0' && character != '/' {
+            print!("{}", character);
+        }
+    }
+    clear();
+    println!();
+}
+
 pub fn halt() {
     clear();
     print!("CPU Halted");
@@ -191,7 +213,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nflix\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -212,6 +234,7 @@ bootloader: Information about the bootloader (rust bootimage-generated).
 clear: Clears the screen.
 echo [message]: Echoes a message.
 flix: Buffer Text Editor
+flox: Ephemeral Text Editor
 halt: Halts the CPU.
 help: Lists all available commands.
 info: Displays system information (architecture, bootloader, vendor, version).

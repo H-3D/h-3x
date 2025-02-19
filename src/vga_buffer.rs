@@ -31,7 +31,7 @@ lazy_static! {
     /// Used by the `print!` and `println!` macros.
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
-        color_code: ColorCode::new(Color::Yellow, Color::Black),
+        color_code: ColorCode::new(Color::White, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
     });
 }
@@ -162,6 +162,10 @@ impl Writer {
         for col in 0..BUFFER_WIDTH {
             self.buffer.chars[row][col].write(blank);
         }
+    }
+    
+    pub fn color(&mut self, foreground: Color, background: Color) {
+        self.color_code = ColorCode::new(foreground, background);
     }
 }
 

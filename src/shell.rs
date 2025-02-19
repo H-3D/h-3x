@@ -2,12 +2,14 @@
 
 use core::arch::asm;
 use crate::{print, println, SYSTEM_CALL, FILE};
+use crate::vga_buffer::{WRITER, Color};
 use crate::keyboard_buffer;
 
 const BUFFER_SIZE: usize = 79;
 const VGA_BUFFER: *mut u16 = 0xB8000 as *mut u16;
 const VGA_WIDTH: usize = 80;
 const VGA_HEIGHT: usize = 25;
+static mut INPUT_COLOR: Color = Color::White;
 
 struct Buffer {
     buffer: [u8; BUFFER_SIZE],
@@ -65,6 +67,30 @@ pub fn shell() {
             }
             if input_str == "clear\n" {
                 clear();
+            }
+            if input_str.starts_with("color ") {
+                unsafe {
+                    INPUT_COLOR = match &input_str[6..] {
+                        "black\n" => Color::Black,
+                        "blue\n" => Color::Blue,
+                        "green\n" => Color::Green,
+                        "cyan\n" => Color::Cyan,
+                        "red\n" => Color::Red,
+                        "magenta\n" => Color::Magenta,
+                        "brown\n" => Color::Brown,
+                        "lightgray\n" => Color::LightGray,
+                        "darkgray\n" => Color::DarkGray,
+                        "lightblue\n" => Color::LightBlue,
+                        "lightgreen\n" => Color::LightGreen,
+                        "lightcyan\n" => Color::LightCyan,
+                        "lightred\n" => Color::LightRed,
+                        "pink\n" => Color::Pink,
+                        "yellow\n" => Color::Yellow,
+                        "white\n" => Color::White,
+                        _ => INPUT_COLOR,
+                    };
+                    color(INPUT_COLOR, Color::Black);
+                }
             }
             if input_str.starts_with("echo ") {
                 let input = &input_str[5..];
@@ -142,6 +168,11 @@ pub fn clear() {
     }
 }
 
+pub fn color(foreground: Color, background: Color) {
+    let mut writer = WRITER.lock();
+    writer.color(foreground, background);
+}
+
 pub fn echo(input: &[u8]) {
     let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
     print!("{}", input_str);
@@ -213,7 +244,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\ncolor [color]\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -232,9 +263,10 @@ pub fn manual() {
 architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (rust bootimage-generated).
 clear: Clears the screen.
+color [color]: Changes the text color.
 echo [message]: Echoes a message.
-flix: Buffer Text Editor
-flox: Ephemeral Text Editor
+flix: Buffer Text Editor.
+flox: Ephemeral Text Editor.
 halt: Halts the CPU.
 help: Lists all available commands.
 info: Displays system information (architecture, bootloader, vendor, version).

@@ -15,7 +15,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell with comman
   - `flox`: Ephemeral Text Editor.
   - `halt`: Halts the CPU.
   - `help`: Lists all available commands.
-  - `info`: Displays system information (architecture, bootloader, vendor, version).
+  - `info`: Displays system information (architecture, bootloader, time, uptime, vendor, version).
   - `manual`: Displays the system manual.
   - `reboot`: Reboots the system.
   - `sleep`: Sleeps for a set duration (for testing purposes).

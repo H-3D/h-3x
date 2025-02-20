@@ -121,6 +121,10 @@ pub fn info() {
     architecture();
     print!("Bootloader: ");
     bootloader();
+    print!("Time: ");
+    time();
+    print!("Uptime: ");
+    uptime();
     print!("Vendor: ");
     vendor();
     print!("Version: ");
@@ -138,7 +142,7 @@ flix: Buffer Text Editor.
 flox: Ephemeral Text Editor.
 halt: Halts the CPU.
 help: Lists all available commands.
-info: Displays system information (architecture, bootloader, vendor, version).
+info: Displays system information (architecture, bootloader, time, uptime, vendor, version).
 manual: Displays the system manual.
 reboot: Reboots the system.
 sleep: Sleeps for a set duration (for testing purposes).

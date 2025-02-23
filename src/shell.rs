@@ -1,4 +1,4 @@
-use crate::{print, println};
+use crate::{print, println, system_call};
 use crate::vga_buffer::Color;
 use crate::keyboard_buffer;
 use crate::commands;
@@ -100,7 +100,7 @@ pub fn shell() {
                 commands::flox();
             }
             if input_str == "halt\n" {
-                commands::halt();
+                system_call(0);
             }
             if input_str == "help\n" {
                 commands::help();
@@ -112,7 +112,7 @@ pub fn shell() {
                 commands::manual();
             }
             if input_str == "reboot\n" {
-                commands::reboot();
+                system_call(1);
             }
             if input_str == "sleep\n" {
                 commands::sleep();

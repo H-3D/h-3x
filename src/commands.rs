@@ -103,15 +103,6 @@ pub fn flox() {
     println!();
 }
 
-pub fn halt() {
-    clear();
-    print!("CPU Halted");
-    unsafe {
-        asm!("hlt");
-    }
-    loop {}
-}
-
 pub fn help() {
     println!("Commands:\narchitecture\nbootloader\nclear\ncolor [color]\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nmanual\nreboot\nsleep\ntime\nuptime\nvendor\nversion");
 }
@@ -150,12 +141,6 @@ time: Displays the Real Time Clock.
 uptime: Displays the system uptime.
 vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
-}
-
-pub fn reboot() {
-    unsafe {
-        asm!("int 0x19");
-    }
 }
 
 pub fn sleep() {

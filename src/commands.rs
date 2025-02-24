@@ -66,7 +66,7 @@ pub fn color(foreground: &str, background: Color) {
 
 pub fn echo(input: &[u8]) {
     let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
-    print!("{}", input_str);
+    println!("{}", input_str.trim());
 }
 
 pub fn flix() {

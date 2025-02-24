@@ -3,11 +3,13 @@
 
 use core::panic::PanicInfo;
 use core::arch::asm;
+use crate::configuration::process;
 
 mod vga_buffer;
 mod keyboard_buffer;
 mod shell;
 mod commands;
+mod configuration;
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
@@ -19,6 +21,10 @@ pub extern "C" fn _start() -> ! {
     println!("Booted the h-3x kernel successfully");
     shell::shell();
     loop {}
+}
+
+pub fn execute(input: &str) {
+    process(input);
 }
 
 pub fn system_call(function: i32) {

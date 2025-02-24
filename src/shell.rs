@@ -1,7 +1,5 @@
-use crate::{print, println, system_call};
-use crate::vga_buffer::Color;
+use crate::{print, println, execute};
 use crate::keyboard_buffer;
-use crate::commands;
 
 const BUFFER_SIZE: usize = 79;
 
@@ -46,67 +44,24 @@ pub fn shell() {
         if character != '\0' {
             print!("{}", character);
             buffer.add_char(character as u8);
-            if buffer.index == BUFFER_SIZE - 1{
-                if character != '\n' {
-                    buffer.reset();
-                    print!("> ");
+            if buffer.index == BUFFER_SIZE - 1 && character != '\n' {
+                let input = buffer.get_input();
+                let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
+                loop {
+                    let character = keyboard_buffer::read_char();
+                    if character == '\n' {
+                        break;
+                    }
                 }
+                execute(input_str);
+                buffer.reset();
+                print!("> ");
             }
         }
         if character == '\n' {
             let input = buffer.get_input();
             let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
-            if input_str == "architecture\n" {
-                commands::architecture();
-            }
-            if input_str == "bootloader\n" {
-                commands::bootloader();
-            }
-            if input_str == "clear\n" {
-                commands::clear();
-            }
-            if input_str.starts_with("color ") {
-                commands::color(&input_str[6..], Color::Black);
-            }
-            if input_str.starts_with("echo ") {
-                commands::echo(&input_str[5..].as_bytes());
-            }
-            if input_str == "flix\n" {
-                commands::flix();
-            }
-            if input_str == "flox\n" {
-                commands::flox();
-            }
-            if input_str == "halt\n" {
-                system_call(0);
-            }
-            if input_str == "help\n" {
-                commands::help();
-            }
-            if input_str == "info\n" {
-                commands::info();
-            }
-            if input_str == "manual\n" {
-                commands::manual();
-            }
-            if input_str == "reboot\n" {
-                system_call(1);
-            }
-            if input_str == "sleep\n" {
-                commands::sleep();
-            }
-            if input_str == "time\n" {
-                commands::time();
-            }
-            if input_str == "uptime\n" {
-                commands::uptime();
-            }
-            if input_str == "vendor\n" {
-                commands::vendor();
-            }
-            if input_str == "version\n" {
-                commands::version();
-            }
+            execute(input_str);
             buffer.reset();
             print!("> ");
         }

@@ -4,7 +4,6 @@ use crate::keyboard_buffer;
 use crate::commands;
 
 const BUFFER_SIZE: usize = 79;
-static mut INPUT_COLOR: Color = Color::White;
 
 struct Buffer {
     buffer: [u8; BUFFER_SIZE],
@@ -67,28 +66,7 @@ pub fn shell() {
                 commands::clear();
             }
             if input_str.starts_with("color ") {
-                unsafe {
-                    INPUT_COLOR = match &input_str[6..] {
-                        "black\n" => Color::Black,
-                        "blue\n" => Color::Blue,
-                        "green\n" => Color::Green,
-                        "cyan\n" => Color::Cyan,
-                        "red\n" => Color::Red,
-                        "magenta\n" => Color::Magenta,
-                        "brown\n" => Color::Brown,
-                        "lightgray\n" => Color::LightGray,
-                        "darkgray\n" => Color::DarkGray,
-                        "lightblue\n" => Color::LightBlue,
-                        "lightgreen\n" => Color::LightGreen,
-                        "lightcyan\n" => Color::LightCyan,
-                        "lightred\n" => Color::LightRed,
-                        "pink\n" => Color::Pink,
-                        "yellow\n" => Color::Yellow,
-                        "white\n" => Color::White,
-                        _ => INPUT_COLOR,
-                    };
-                    commands::color(INPUT_COLOR, Color::Black);
-                }
+                commands::color(&input_str[6..], Color::Black);
             }
             if input_str.starts_with("echo ") {
                 commands::echo(&input_str[5..].as_bytes());

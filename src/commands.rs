@@ -12,6 +12,7 @@ const VGA_HEIGHT: usize = 25;
 const RTC_PORT_INDEX: u16 = 0x70;
 const RTC_PORT_DATA: u16 = 0x71;
 static mut FILE: &[u8] = b"";
+static mut INPUT_COLOR: Color = Color::White;
 
 pub fn architecture() {
     println!("x86_64");
@@ -37,9 +38,30 @@ pub fn clear() {
     }
 }
 
-pub fn color(foreground: Color, background: Color) {
-    let mut writer = WRITER.lock();
-    writer.color(foreground, background);
+pub fn color(foreground: &str, background: Color) {
+    unsafe {
+        INPUT_COLOR = match foreground {
+            "black\n" => Color::Black,
+            "blue\n" => Color::Blue,
+            "green\n" => Color::Green,
+            "cyan\n" => Color::Cyan,
+            "red\n" => Color::Red,
+            "magenta\n" => Color::Magenta,
+            "brown\n" => Color::Brown,
+            "lightgray\n" => Color::LightGray,
+            "darkgray\n" => Color::DarkGray,
+            "lightblue\n" => Color::LightBlue,
+            "lightgreen\n" => Color::LightGreen,
+            "lightcyan\n" => Color::LightCyan,
+            "lightred\n" => Color::LightRed,
+            "pink\n" => Color::Pink,
+            "yellow\n" => Color::Yellow,
+            "white\n" => Color::White,
+            _ => INPUT_COLOR,
+        };
+        let mut writer = WRITER.lock();
+        writer.color(INPUT_COLOR, background);
+    }
 }
 
 pub fn echo(input: &[u8]) {

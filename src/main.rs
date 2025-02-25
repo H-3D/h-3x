@@ -57,7 +57,7 @@ fn halt() {
     loop {}
 }
 
-pub fn reboot() {
+fn reboot() {
     unsafe {
         asm!("int 0x19");
     }

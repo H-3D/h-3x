@@ -11,7 +11,7 @@ const VGA_WIDTH: usize = 80;
 const VGA_HEIGHT: usize = 25;
 const RTC_PORT_INDEX: u16 = 0x70;
 const RTC_PORT_DATA: u16 = 0x71;
-static mut FILE: &[u8] = b"";
+static mut BUFFER: &[u8] = b"";
 static mut INPUT_COLOR: Color = Color::White;
 
 pub fn architecture() {
@@ -72,7 +72,7 @@ pub fn echo(input: &[u8]) {
 pub fn flix() {
     clear();
     unsafe {
-        print!("{}", core::str::from_utf8_unchecked(FILE));
+        print!("{}", core::str::from_utf8_unchecked(BUFFER));
     }
     loop {
         let character = keyboard_buffer::read_char();
@@ -102,7 +102,7 @@ pub fn screen() {
                 VGA[index] = (char_cell & 0xFF) as u8;
             }
         }
-        FILE = &VGA;
+        BUFFER = &VGA;
     }
 }
 

@@ -19,7 +19,7 @@ pub fn architecture() {
 }
 
 pub fn bootloader() {
-    println!("rust bootimage-generated bootloader");
+    println!("bootloader v0.9 crate");
 }
 
 pub fn clear() {
@@ -147,7 +147,7 @@ pub fn info() {
 pub fn manual() {
     println!("Commands:
 architecture: Displays the system architecture (x86_64).
-bootloader: Information about the bootloader (rust bootimage-generated).
+bootloader: Information about the bootloader (bootloader v0.9 crate).
 clear: Clears the screen.
 color [color]: Changes the text color.
 echo [message]: Echoes a message.

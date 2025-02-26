@@ -25,6 +25,6 @@ pub fn process(input_str: &str) {
         _ if input_str.starts_with("color ") => commands::color(&input_str[6..], Color::Black),
         _ if input_str.starts_with("echo ") => commands::echo(&input_str[5..].as_bytes()),
         _ if input_str.starts_with("file ") => system_call(2, &input_str[5..].trim().as_bytes()),
-        _ => println!("Invalid Command"),
+        _ => println!("ERROR: Invalid Command"),
     }
 }

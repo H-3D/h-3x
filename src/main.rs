@@ -83,6 +83,10 @@ fn file(text: &[u8]) {
                     FILE[LENGTH] = byte;
                     LENGTH += 1;
                 }
+                else {
+                    println!("ERROR: Memory attempted to exceed 1920 bytes");
+                    break;
+                }
             }
             if LENGTH < FILE.len() {
                 FILE[LENGTH] = b' ';

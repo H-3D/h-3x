@@ -126,7 +126,7 @@ pub fn flox() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\ncolor [color]\necho [message]\nfile [text]\nflix\nflox\nhalt\nhelp\ninfo\nlist\nmanual\nreboot\nremove\nsleep\ntime\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\nclear\ncolor [color]\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nsleep\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -151,18 +151,18 @@ bootloader: Information about the bootloader (bootloader v0.9 crate).
 clear: Clears the screen.
 color [color]: Changes the text color.
 echo [message]: Echoes a message.
-file [text]: Appends your text to a variable.
 flix: Buffer Text Editor.
 flox: Ephemeral Text Editor.
 halt: Halts the CPU.
 help: Lists all available commands.
 info: Displays system information.
-list: Displays the contents of the variable.
+ls: Displays the contents of the variable.
 manual: Displays the system manual.
+purge: Deletes all the text in the variable.
 reboot: Reboots the system.
-remove: Deletes all the text in the variable.
 sleep: Sleeps for a set duration (for testing purposes).
 time: Displays the Real Time Clock.
+touch [text]: Appends your text to a variable.
 uptime: Displays the system uptime.
 vendor: Displays CPU vendor string.
 version: Displays the kernel version.");

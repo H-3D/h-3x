@@ -13,18 +13,18 @@ H-3X is a Rust-based operating system kernel featuring a basic shell, system cal
   - `clear`: Clears the screen.
   - `color [color]`: Changes the text color.
   - `echo [message]`: Echoes a message.
-  - `file [text]`: Appends your text to a variable.
   - `flix`: Buffer Text Editor.
   - `flox`: Ephemeral Text Editor.
   - `halt`: Halts the CPU.
   - `help`: Lists all available commands.
   - `info`: Displays system information.
-  - `list`: Displays the contents of the variable.
+  - `ls`: Displays the contents of the variable.
   - `manual`: Displays the system manual.
+  - `purge`: Deletes all the text in the variable.
   - `reboot`: Reboots the system.
-  - `remove`: Deletes all the text in the variable.
   - `sleep`: Sleeps for a set duration (for testing purposes).
   - `time`: Displays the Real Time Clock.
+  - `touch [text]`: Appends your text to a variable.
   - `uptime`: Displays the system uptime.
   - `vendor`: Displays CPU vendor string.
   - `version`: Displays the kernel version.

@@ -38,13 +38,13 @@ pub fn system_call(function: i32, input: &[u8]) {
         reboot();
     }
     if function == 2 {
-        file(input);
+        touch(input);
     }
     if function == 3 {
-        remove();
+        purge();
     }
     if function == 4 {
-        list();
+        ls();
     }
 }
 
@@ -75,7 +75,7 @@ fn reboot() {
     }
 }
 
-fn file(text: &[u8]) {
+fn touch(text: &[u8]) {
     unsafe {
         if !text.is_empty() {
             for &byte in text.iter() {
@@ -96,14 +96,14 @@ fn file(text: &[u8]) {
     }
 }
 
-fn remove() {
+fn purge() {
     unsafe {
         FILE = [0; 1920];
         LENGTH = 0;
     }
 }
 
-fn list() {
+fn ls() {
     unsafe {
         for i in 0..LENGTH {
             print!("{}", FILE[i] as char);

@@ -23,6 +23,7 @@ pub fn bootloader() {
 }
 
 pub fn calculator() {
+    clear();
     loop {
         let mut buffer = [0u8; 32];
         let mut pos = 0;
@@ -32,6 +33,7 @@ pub fn calculator() {
             if c == '\0' { continue; }
             
             if c == '\\' {
+                clear();
                 println!();
                 return;
             }

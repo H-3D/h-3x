@@ -13,6 +13,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell, system cal
   - `calculator`: Interactive calculator mode for basic arithmetic operations.
   - `clear`: Clears the screen.
   - `color [color]`: Changes the text color.
+  - `cpu`: Displays the CPU brand string.
   - `echo [message]`: Echoes a message.
   - `flix`: Buffer Text Editor.
   - `flox`: Ephemeral Text Editor.

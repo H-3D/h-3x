@@ -8,6 +8,7 @@ pub fn process(input_str: &str) {
         "bootloader" => commands::bootloader(),
         "calculator" => commands::calculator(),
         "clear" => commands::clear(),
+        "cpu" => commands::cpu(),
         "flix" => commands::flix(),
         "flox" => commands::flox(),
         "halt" => system_call(0, b""),

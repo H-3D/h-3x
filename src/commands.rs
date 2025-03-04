@@ -152,6 +152,47 @@ pub fn color(foreground: &str, background: Color) {
     }
 }
 
+pub fn cpu() {
+    let mut brand_string = [0u8; 48];
+    let mut regs: [u32; 4] = [0; 4];
+
+    unsafe {
+        asm!(
+            "cpuid",
+            in("eax") 0x80000000u32,
+            lateout("eax") regs[0],
+            lateout("edi") regs[1],
+            lateout("ecx") regs[2],
+            lateout("edx") regs[3],
+        );
+    }
+
+    if regs[0] >= 0x80000004 {
+        for i in 0..3 {
+            unsafe {
+                asm!(
+                    "cpuid",
+                    in("eax") 0x80000002u32 + i as u32,
+                    lateout("eax") regs[0],
+                    lateout("edi") regs[1],
+                    lateout("ecx") regs[2],
+                    lateout("edx") regs[3],
+                );
+            }
+
+            let offset = i as usize * 16;
+            for (j, reg) in regs.iter().enumerate() {
+                brand_string[offset + j * 4..(offset + j * 4 + 4)]
+                    .copy_from_slice(&reg.to_le_bytes());
+            }
+        }
+
+        if let Ok(s) = core::str::from_utf8(&brand_string) {
+            println!("{}", s.trim_end());
+        }
+    }
+}
+
 pub fn echo(input: &[u8]) {
     let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
     println!("{}", input_str.trim());
@@ -214,7 +255,7 @@ pub fn flox() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nsleep\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nsleep\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -222,6 +263,8 @@ pub fn info() {
     architecture();
     print!("Bootloader: ");
     bootloader();
+    print!("CPU: ");
+    cpu();
     print!("Time: ");
     time();
     print!("Uptime: ");
@@ -239,6 +282,7 @@ bootloader: Information about the bootloader (bootloader v0.9 crate).
 calculator: Interactive calculator mode.
 clear: Clears the screen.
 color [color]: Changes the text color.
+cpu: Displays the CPU brand string.
 echo [message]: Echoes a message.
 flix: Buffer Text Editor.
 flox: Ephemeral Text Editor.

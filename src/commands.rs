@@ -22,6 +22,94 @@ pub fn bootloader() {
     println!("bootloader v0.9 crate");
 }
 
+pub fn calculator() {
+    loop {
+        let mut buffer = [0u8; 32];
+        let mut pos = 0;
+
+        loop {
+            let c = keyboard_buffer::read_char();
+            if c == '\0' { continue; }
+            
+            if c == '\\' {
+                println!();
+                return;
+            }
+
+            if c == '\n' {
+                println!();
+                break;
+            }
+
+            if (c.is_ascii_digit() || ['+', '-', '*', '/', '.', ' '].contains(&c)) && pos < buffer.len() {
+                print!("{}", c);
+                buffer[pos] = c as u8;
+                pos += 1;
+            }
+        }
+
+        let result = evaluate_expression(&buffer[..pos]);
+        match result {
+            Some(value) => println!("{:.15}", value),  // Changed from .6 to .15 for maximum reliable precision
+            None => println!("Invalid expression"),
+        }
+    }
+}
+
+fn evaluate_expression(expr: &[u8]) -> Option<f64> {
+    let mut num1 = 0.0f64;
+    let mut num2 = 0.0f64;
+    let mut op = 0u8;
+    let mut parsing_second = false;
+    let mut decimal_factor = 0.1f64;
+    let mut is_decimal = false;
+
+    for &byte in expr {
+        match byte {
+            b'0'..=b'9' if !parsing_second => {
+                if is_decimal {
+                    num1 += (byte - b'0') as f64 * decimal_factor;
+                    decimal_factor *= 0.1;
+                } else {
+                    num1 = num1 * 10.0 + (byte - b'0') as f64;
+                }
+            }
+            b'0'..=b'9' if parsing_second => {
+                if is_decimal {
+                    num2 += (byte - b'0') as f64 * decimal_factor;
+                    decimal_factor *= 0.1;
+                } else {
+                    num2 = num2 * 10.0 + (byte - b'0') as f64;
+                }
+            }
+            b'.' if !parsing_second && !is_decimal => {
+                is_decimal = true;
+                decimal_factor = 0.1;
+            }
+            b'.' if parsing_second && !is_decimal => {
+                is_decimal = true;
+                decimal_factor = 0.1;
+            }
+            b'+' | b'-' | b'*' | b'/' if !parsing_second => {
+                op = byte;
+                parsing_second = true;
+                is_decimal = false;
+                decimal_factor = 0.1;
+            }
+            b' ' => continue,
+            _ => return None,
+        }
+    }
+
+    match op {
+        b'+' => Some(num1 + num2),
+        b'-' => Some(num1 - num2),
+        b'*' => Some(num1 * num2),
+        b'/' => if num2 != 0.0 { Some(num1 / num2) } else { None },
+        _ => None,
+    }
+}
+
 pub fn clear() {
     unsafe {
         asm!(
@@ -126,7 +214,7 @@ pub fn flox() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\nclear\ncolor [color]\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nsleep\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nsleep\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -148,6 +236,7 @@ pub fn manual() {
     println!("Commands:
 architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (bootloader v0.9 crate).
+calculator: Interactive calculator mode.
 clear: Clears the screen.
 color [color]: Changes the text color.
 echo [message]: Echoes a message.
@@ -269,4 +358,5 @@ pub fn vendor() {
 
 pub fn version() {
     println!("h-3x Kernel v1.0.0-beta");
+
 }

@@ -6,6 +6,7 @@ pub fn process(input_str: &str) {
     match input_str.trim() {
         "architecture" => commands::architecture(),
         "bootloader" => commands::bootloader(),
+        "calculator" => commands::calculator(),
         "clear" => commands::clear(),
         "flix" => commands::flix(),
         "flox" => commands::flox(),

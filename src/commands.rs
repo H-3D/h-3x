@@ -257,7 +257,7 @@ pub fn flox() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nsleep\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -285,6 +285,7 @@ calculator: Interactive calculator mode.
 clear: Clears the screen.
 color [color]: Changes the text color.
 cpu: Displays the CPU brand string.
+delay: Sleeps for a set duration (for testing purposes).
 echo [message]: Echoes a message.
 flix: Buffer Text Editor.
 flox: Ephemeral Text Editor.
@@ -295,7 +296,6 @@ ls: Displays the contents of the variable.
 manual: Displays the system manual.
 purge: Deletes all the text in the variable.
 reboot: Reboots the system.
-sleep: Sleeps for a set duration (for testing purposes).
 time: Displays the Real Time Clock.
 touch [text]: Appends your text to a variable.
 uptime: Displays the system uptime.
@@ -303,7 +303,7 @@ vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
 }
 
-pub fn sleep() {
+pub fn delay() {
     for _ in 0..10_000_000 {}
 }
 

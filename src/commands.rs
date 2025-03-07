@@ -52,8 +52,8 @@ pub fn calculator() {
 
         let result = evaluate_expression(&buffer[..pos]);
         match result {
-            Some(value) => println!("{:.15}", value),  // Changed from .6 to .15 for maximum reliable precision
-            None => println!("Invalid expression"),
+            Some(value) => println!("{:.15}", value),
+            None => println!("ERROR: Invalid expression"),
         }
     }
 }
@@ -195,6 +195,10 @@ pub fn cpu() {
     }
 }
 
+pub fn delay() {
+    for _ in 0..10_000_000 {}
+}
+
 pub fn echo(input: &[u8]) {
     let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
     println!("{}", input_str.trim());
@@ -256,6 +260,15 @@ pub fn flox() {
     println!();
 }
 
+pub fn halt() {
+    clear();
+    print!("CPU Halted");
+    unsafe {
+        asm!("hlt");
+    }
+    loop {}
+}
+
 pub fn help() {
     println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
@@ -303,8 +316,10 @@ vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
 }
 
-pub fn delay() {
-    for _ in 0..10_000_000 {}
+pub fn reboot() {
+    unsafe {
+        asm!("int 0x19");
+    }
 }
 
 struct Time {

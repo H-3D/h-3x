@@ -2,7 +2,6 @@
 #![no_main]
 
 use core::panic::PanicInfo;
-use core::arch::asm;
 use crate::configuration::process;
 
 mod vga_buffer;
@@ -32,46 +31,13 @@ pub fn execute(input: &str) {
 
 pub fn system_call(function: i32, input: &[u8]) {
     if function == 0 {
-        halt();
-    }
-    if function == 1 {
-        reboot();
-    }
-    if function == 2 {
         touch(input);
     }
-    if function == 3 {
+    if function == 1 {
         purge();
     }
-    if function == 4 {
+    if function == 2 {
         ls();
-    }
-}
-
-fn halt() {
-    unsafe {
-        asm!(
-            "mov rdi, 0xB8000",
-            "mov rax, 0x20",
-            "mov rbx, 0x0F",
-            "mov rcx, 2000",
-            "2:",
-            "mov [rdi], ax",
-            "add rdi, 2",
-            "loop 2b",
-            options(nostack)
-        );
-    }
-    print!("CPU Halted");
-    unsafe {
-        asm!("hlt");
-    }
-    loop {}
-}
-
-fn reboot() {
-    unsafe {
-        asm!("int 0x19");
     }
 }
 

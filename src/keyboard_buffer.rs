@@ -10,7 +10,6 @@ pub fn read_char() -> char {
 
     let scancode = unsafe { data_port.read() };
 
-    // Check for key release
     if scancode & 0x80 != 0 {
         let key_released = scancode & 0x7F;
         if key_released == 0x2A || key_released == 0x36 {
@@ -19,7 +18,6 @@ pub fn read_char() -> char {
         return '\0';
     }
 
-    // Check for shift key press
     if scancode == 0x2A || scancode == 0x36 {
         unsafe { SHIFT_PRESSED = true; }
         return '\0';
@@ -66,19 +64,19 @@ fn scancode_to_char(scancode: u8) -> char {
         0x30 => if unsafe { SHIFT_PRESSED } { 'B' } else { 'b' },
         0x31 => if unsafe { SHIFT_PRESSED } { 'N' } else { 'n' },
         0x32 => if unsafe { SHIFT_PRESSED } { 'M' } else { 'm' },
-        0x1C => '\n', // Enter
-        0x39 => ' ',  // Space
-        0x0C => if unsafe { SHIFT_PRESSED } { '_' } else { '-' },  // Dash
-        0x0D => if unsafe { SHIFT_PRESSED } { '+' } else { '=' },  // Equals
-        0x1A => if unsafe { SHIFT_PRESSED } { '{' } else { '[' },  // Left bracket
-        0x1B => if unsafe { SHIFT_PRESSED } { '}' } else { ']' },  // Right bracket
-        0x27 => if unsafe { SHIFT_PRESSED } { ':' } else { ';' },  // Semicolon
-        0x28 => if unsafe { SHIFT_PRESSED } { '"' } else { '\'' }, // Apostrophe
-        0x29 => if unsafe { SHIFT_PRESSED } { '~' } else { '`' },  // Backtick
-        0x2B => if unsafe { SHIFT_PRESSED } { '|' } else { '\\' }, // Backslash
-        0x33 => if unsafe { SHIFT_PRESSED } { '<' } else { ',' },  // Comma
-        0x34 => if unsafe { SHIFT_PRESSED } { '>' } else { '.' },  // Period
-        0x35 => if unsafe { SHIFT_PRESSED } { '?' } else { '/' },  // Forward slash
-        _ => '\0',     // Unknown character
+        0x1C => '\n',
+        0x39 => ' ',
+        0x0C => if unsafe { SHIFT_PRESSED } { '_' } else { '-' },
+        0x0D => if unsafe { SHIFT_PRESSED } { '+' } else { '=' },
+        0x1A => if unsafe { SHIFT_PRESSED } { '{' } else { '[' },
+        0x1B => if unsafe { SHIFT_PRESSED } { '}' } else { ']' },
+        0x27 => if unsafe { SHIFT_PRESSED } { ':' } else { ';' },
+        0x28 => if unsafe { SHIFT_PRESSED } { '"' } else { '\'' },
+        0x29 => if unsafe { SHIFT_PRESSED } { '~' } else { '`' },
+        0x2B => if unsafe { SHIFT_PRESSED } { '|' } else { '\\' },
+        0x33 => if unsafe { SHIFT_PRESSED } { '<' } else { ',' },
+        0x34 => if unsafe { SHIFT_PRESSED } { '>' } else { '.' },
+        0x35 => if unsafe { SHIFT_PRESSED } { '?' } else { '/' },
+        _ => '\0',
     }
 }

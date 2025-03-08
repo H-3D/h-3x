@@ -2,12 +2,8 @@
 
 H-3X is a Rust-based operating system kernel featuring a basic shell, system calls, error handling and commands.
 
-## Features
+## Commands
 
-- **Basic Shell**
-- **System Calls**
-- **Error Handling**
-- **Commands**:
   - `architecture`: Displays the system architecture (x86_64).
   - `bootloader`: Information about the bootloader (bootloader v0.9 crate).
   - `calculator`: Interactive calculator mode for basic arithmetic operations.

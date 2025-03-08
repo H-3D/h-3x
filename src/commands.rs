@@ -52,7 +52,7 @@ pub fn calculator() {
 
         let result = evaluate_expression(&buffer[..pos]);
         match result {
-            Some(value) => println!("{:.15}", value),
+            Some(value) => println!("{:.6}", value),
             None => println!("ERROR: Invalid expression"),
         }
     }

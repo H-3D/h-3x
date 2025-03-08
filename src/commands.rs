@@ -50,6 +50,10 @@ pub fn calculator() {
             }
         }
 
+        if pos == 0 {
+            continue;
+        }
+
         let result = evaluate_expression(&buffer[..pos]);
         match result {
             Some(value) => println!("{:.6}", value),

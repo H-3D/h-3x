@@ -1,4 +1,5 @@
-use crate::{print, println, execute};
+use crate::{print, println};
+use crate::configuration::execute;
 use crate::keyboard_buffer;
 
 const BUFFER_SIZE: usize = 79;

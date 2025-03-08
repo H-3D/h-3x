@@ -2,7 +2,6 @@
 #![no_main]
 
 use core::panic::PanicInfo;
-use crate::configuration::process;
 
 mod vga_buffer;
 mod keyboard_buffer;
@@ -23,10 +22,6 @@ pub extern "C" fn _start() -> ! {
     println!("Booted the h-3x kernel successfully");
     shell::shell();
     loop {}
-}
-
-pub fn execute(input: &str) {
-    process(input);
 }
 
 pub fn system_call(function: i32, input: &[u8]) {

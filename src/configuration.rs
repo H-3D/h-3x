@@ -2,7 +2,7 @@ use crate::vga_buffer::Color;
 use crate::{println, system_call};
 use crate::commands;
 
-pub fn process(input_str: &str) {
+pub fn execute(input_str: &str) {
     match input_str.trim() {
         "architecture" => commands::architecture(),
         "bootloader" => commands::bootloader(),

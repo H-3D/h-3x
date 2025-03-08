@@ -270,7 +270,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -309,6 +309,7 @@ ls: Displays the contents of the variable.
 manual: Displays the system manual.
 purge: Deletes all the text in the variable.
 reboot: Reboots the system.
+rm [text]: Removes the specified text from the variable.
 time: Displays the Real Time Clock.
 touch [text]: Appends your text to a variable.
 uptime: Displays the system uptime.

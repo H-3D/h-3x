@@ -25,6 +25,7 @@ H-3X is a Rust-based operating system kernel featuring a basic shell, system cal
   - `manual`: Displays the system manual.
   - `purge`: Deletes all the text in the variable.
   - `reboot`: Reboots the system.
+  - `rm [text]`: Removes the specified text from the variable.
   - `time`: Displays the Real Time Clock.
   - `touch [text]`: Appends your text to a variable.
   - `uptime`: Displays the system uptime.

@@ -1,6 +1,6 @@
 # H-3X
 
-H-3X is a Rust-based operating system kernel featuring a basic shell, system calls, error handling and commands.
+H-3X is a toy operating system built in Rust
 
 ## Commands
 

@@ -82,6 +82,12 @@ fn rm(text: &[u8]) {
                     }
                 }
             }
+            if new_index > 0 && new_content[new_index - 1] != b' ' {
+                if new_index < new_content.len() {
+                    new_content[new_index] = b' ';
+                    new_index += 1;
+                }
+            }
             if !found {
                 println!("ERROR: Text not found");
             } else {

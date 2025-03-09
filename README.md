@@ -4,6 +4,9 @@ H-3X is a minimalist operating system built in Rust, designed for educational ex
 
 ## Getting Started:
 
+> **Note:**  
+> Windows users should use the Windows Subsystem for Linux (WSL) for optimal compatibility. For detailed instructions, please refer to the [official Microsoft guide](https://docs.microsoft.com/en-us/windows/wsl/install).
+
 - Install Rust: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 - Source the corresponding env file under $HOME/.cargo:
     - sh/bash/zsh/ash/dash/pdksh: `. "$HOME/.cargo/env"`
@@ -20,8 +23,6 @@ H-3X is a minimalist operating system built in Rust, designed for educational ex
     - macOS:
         - Homebrew: `brew install qemu`
         - MacPorts: `sudo port install qemu`
-    - Windows:
-        - Follow the [QEMU installation instructions for Windows](https://www.qemu.org/download/#windows)
 - Clone the repository: `git clone https://github.com/H-3D/h-3x`
 - Enter the 'h-3x' directory: `cd h-3x`
 - Set the project to use the Rust Nightly Compiler: `rustup override set nightly`

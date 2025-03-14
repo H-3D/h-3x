@@ -9,6 +9,7 @@ mod shell;
 mod commands;
 mod configuration;
 
+pub static mut ERROR: bool = false;
 static mut FILE: [u8; 1920] = [0; 1920];
 static mut LENGTH: usize = 0;
 
@@ -89,8 +90,10 @@ fn rm(text: &[u8]) {
                 }
             }
             if !found {
+                ERROR = true;
                 println!("ERROR: Text not found");
             } else {
+                ERROR = false;
                 for i in 0..new_index {
                     FILE[i] = new_content[i];
                 }
@@ -105,10 +108,12 @@ fn touch(text: &[u8]) {
         if !text.is_empty() {
             for &byte in text.iter() {
                 if LENGTH < FILE.len() {
+                    ERROR = false;
                     FILE[LENGTH] = byte;
                     LENGTH += 1;
                 }
                 else {
+                    ERROR = true;
                     println!("ERROR: Memory attempted to exceed 1920 bytes");
                     break;
                 }

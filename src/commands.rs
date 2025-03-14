@@ -2,7 +2,7 @@
 
 use core::arch::asm;
 use core::fmt;
-use crate::{print, println};
+use crate::{print, println, system_call, ERROR};
 use crate::vga_buffer::{WRITER, Color};
 use crate::keyboard_buffer;
 
@@ -134,24 +134,29 @@ pub fn clear() {
 
 pub fn color(foreground: &str, background: Color) {
     unsafe {
+        ERROR = false;
         INPUT_COLOR = match foreground {
-            "black\n" => Color::Black,
-            "blue\n" => Color::Blue,
-            "green\n" => Color::Green,
-            "cyan\n" => Color::Cyan,
-            "red\n" => Color::Red,
-            "magenta\n" => Color::Magenta,
-            "brown\n" => Color::Brown,
-            "lightgray\n" => Color::LightGray,
-            "darkgray\n" => Color::DarkGray,
-            "lightblue\n" => Color::LightBlue,
-            "lightgreen\n" => Color::LightGreen,
-            "lightcyan\n" => Color::LightCyan,
-            "lightred\n" => Color::LightRed,
-            "pink\n" => Color::Pink,
-            "yellow\n" => Color::Yellow,
-            "white\n" => Color::White,
-            _ => INPUT_COLOR,
+            "black" => Color::Black,
+            "blue" => Color::Blue,
+            "green" => Color::Green,
+            "cyan" => Color::Cyan,
+            "red" => Color::Red,
+            "magenta" => Color::Magenta,
+            "brown" => Color::Brown,
+            "lightgray" => Color::LightGray,
+            "darkgray" => Color::DarkGray,
+            "lightblue" => Color::LightBlue,
+            "lightgreen" => Color::LightGreen,
+            "lightcyan" => Color::LightCyan,
+            "lightred" => Color::LightRed,
+            "pink" => Color::Pink,
+            "yellow" => Color::Yellow,
+            "white" => Color::White,
+            _ => {
+                ERROR = true;
+                println!("ERROR: Invalid color");
+                return;
+            },
         };
         let mut writer = WRITER.lock();
         writer.color(INPUT_COLOR, background);
@@ -205,7 +210,7 @@ pub fn delay() {
 
 pub fn echo(input: &[u8]) {
     let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
-    println!("{}", input_str.trim());
+    println!("{}", input_str);
 }
 
 pub fn flix() {
@@ -274,7 +279,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("Commands:\narchitecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("architecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\nmv [previous text] [updated text]\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -295,8 +300,7 @@ pub fn info() {
 }
 
 pub fn manual() {
-    println!("Commands:
-architecture: Displays the system architecture (x86_64).
+    println!("architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (bootloader v0.9 crate).
 calculator: Interactive calculator mode.
 clear: Clears the screen.
@@ -311,6 +315,7 @@ help: Lists all available commands.
 info: Displays system information.
 ls: Displays the contents of the variable.
 manual: Displays the system manual.
+mv [previous text] [updated text]: Replaces previous text with updated text.
 purge: Deletes all the text in the variable.
 reboot: Reboots the system.
 rm [text]: Removes the specified text from the variable.
@@ -319,6 +324,15 @@ touch [text]: Appends your text to a variable.
 uptime: Displays the system uptime.
 vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
+}
+
+pub fn mv(prev: &str, updated: &str){
+    system_call(2, prev.as_bytes());
+    unsafe {
+        if ERROR == false {
+            system_call(3, updated.as_bytes());
+        }
+    }
 }
 
 pub fn reboot() {

@@ -50,6 +50,7 @@ H-3X is a minimalist operating system built in Rust, designed for educational ex
 - `info`: Displays system information.
 - `ls`: Displays the contents of the variable.
 - `manual`: Displays the system manual.
+- `mv [previous text] [updated text]`: Replaces the previous text with the updated text.
 - `purge`: Deletes all the text in the variable.
 - `reboot`: Reboots the system.
 - `rm [text]`: Removes the specified text from the variable.

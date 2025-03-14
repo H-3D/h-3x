@@ -1,8 +1,11 @@
 use crate::vga_buffer::Color;
-use crate::{println, system_call};
+use crate::{println, system_call, ERROR};
 use crate::commands;
 
 pub fn execute(input_str: &str) {
+    unsafe {
+        ERROR = false;
+    }
     match input_str.trim() {
         "architecture" => commands::architecture(),
         "bootloader" => commands::bootloader(),
@@ -24,10 +27,35 @@ pub fn execute(input_str: &str) {
         "vendor" => commands::vendor(),
         "version" => commands::version(),
         "" => (),
-        _ if input_str.starts_with("color ") => commands::color(&input_str[6..], Color::Black),
-        _ if input_str.starts_with("echo ") => commands::echo(&input_str[5..].as_bytes()),
+        _ if input_str.starts_with("color ") => commands::color(&input_str[6..].trim(), Color::Black),
+        _ if input_str.starts_with("echo ") => commands::echo(&input_str[5..].trim().as_bytes()),
         _ if input_str.starts_with("rm ") => system_call(2, &input_str[3..].trim().as_bytes()),
         _ if input_str.starts_with("touch ") => system_call(3, &input_str[6..].trim().as_bytes()),
-        _ => println!("ERROR: Invalid Command"),
+        _ if input_str.starts_with("mv ") => {
+            let trimmed = input_str[3..].trim();
+            if let Some(space_idx) = trimmed.find(' ') {
+                let prev = &trimmed[..space_idx];
+                let updated = trimmed[space_idx + 1..].trim();
+                if prev.is_empty() || updated.is_empty() {
+                    unsafe {
+                        ERROR = true;
+                    }
+                    println!("ERROR: mv command requires [previous text] and [updated text]");
+                } else {
+                    commands::mv(prev, updated);
+                }
+            } else {
+                unsafe {
+                    ERROR = true;
+                }
+                println!("ERROR: mv command requires [previous text] and [updated text]");
+            }
+        },
+        _ => {
+            unsafe {
+                ERROR = true;
+            }
+            println!("ERROR: Invalid Command")
+        },
     }
 }

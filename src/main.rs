@@ -106,22 +106,27 @@ fn rm(text: &[u8]) {
 fn touch(text: &[u8]) {
     unsafe {
         if !text.is_empty() {
-            for &byte in text.iter() {
-                if LENGTH < FILE.len() {
-                    ERROR = false;
-                    FILE[LENGTH] = byte;
-                    LENGTH += 1;
-                }
-                else {
-                    ERROR = true;
-                    println!("ERROR: Memory attempted to exceed 1920 bytes");
-                    break;
-                }
+            let space: usize = text.len();
+            if LENGTH + space > FILE.len() {
+                ERROR = true;
+                println!("ERROR: Memory attempted to exceed 1920 bytes");
+                return;
+            }
+            else {
+                ERROR = false;
+            }
+            for &byte in text {
+                FILE[LENGTH] = byte;
+                LENGTH += 1;
             }
             if LENGTH < FILE.len() {
                 FILE[LENGTH] = b' ';
                 LENGTH += 1;
             }
+        }
+        else {
+            ERROR = true;
+            println!("ERROR: No text provided");
         }
     }
 }

@@ -28,29 +28,10 @@ pub fn execute(input_str: &str) {
         "version" => commands::version(),
         "" => (),
         _ if input_str.starts_with("color ") => commands::color(&input_str[6..].trim(), Color::Black),
-        _ if input_str.starts_with("echo ") => commands::echo(&input_str[5..].trim().as_bytes()),
+        _ if input_str.starts_with("echo ") => commands::echo(&input_str[5..].trim()),
         _ if input_str.starts_with("rm ") => system_call(2, &input_str[3..].trim().as_bytes()),
         _ if input_str.starts_with("touch ") => system_call(3, &input_str[6..].trim().as_bytes()),
-        _ if input_str.starts_with("mv ") => {
-            let trimmed = input_str[3..].trim();
-            if let Some(space_idx) = trimmed.find(' ') {
-                let prev = &trimmed[..space_idx];
-                let updated = trimmed[space_idx + 1..].trim();
-                if prev.is_empty() || updated.is_empty() {
-                    unsafe {
-                        ERROR = true;
-                    }
-                    println!("ERROR: mv command requires [previous text] and [updated text]");
-                } else {
-                    commands::mv(prev, updated);
-                }
-            } else {
-                unsafe {
-                    ERROR = true;
-                }
-                println!("ERROR: mv command requires [previous text] and [updated text]");
-            }
-        },
+        _ if input_str.starts_with("mv ") => commands::mv(input_str[3..].trim()),
         _ => {
             unsafe {
                 ERROR = true;

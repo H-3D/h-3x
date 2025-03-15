@@ -152,6 +152,11 @@ pub fn color(foreground: &str, background: Color) {
             "pink" => Color::Pink,
             "yellow" => Color::Yellow,
             "white" => Color::White,
+            "" => {
+                ERROR = true;
+                println!("ERROR: No color specified");
+                return;
+            }
             _ => {
                 ERROR = true;
                 println!("ERROR: Invalid color");
@@ -208,9 +213,8 @@ pub fn delay() {
     for _ in 0..10_000_000 {}
 }
 
-pub fn echo(input: &[u8]) {
-    let input_str = core::str::from_utf8(input).unwrap_or("<invalid UTF-8>");
-    println!("{}", input_str);
+pub fn echo(input: &str) {
+    println!("{}", input);
 }
 
 pub fn flix() {
@@ -326,12 +330,32 @@ vendor: Displays CPU vendor string.
 version: Displays the kernel version.");
 }
 
-pub fn mv(prev: &str, updated: &str){
-    system_call(2, prev.as_bytes());
-    unsafe {
-        if ERROR == false {
-            system_call(3, updated.as_bytes());
+pub fn mv(input_str: &str){
+    let trimmed = input_str;
+    if let Some(space_idx) = trimmed.find(' ') {
+        let prev = &trimmed[..space_idx];
+        let updated = trimmed[space_idx + 1..].trim();
+        if prev.is_empty() || updated.is_empty() {
+            unsafe {
+                ERROR = true;
+            }
+            println!("ERROR: mv command requires [previous text] and [updated text]");
+        } else {
+            system_call(2, prev.as_bytes());
+            unsafe {
+                if ERROR == false {
+                    system_call(3, updated.as_bytes());
+                }
+                if ERROR == true {
+                    system_call(3, prev.as_bytes());
+                }
+            }
         }
+    } else {
+        unsafe {
+            ERROR = true;
+        }
+        println!("ERROR: mv command requires [previous text] and [updated text]");
     }
 }
 

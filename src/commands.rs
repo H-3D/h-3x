@@ -343,9 +343,10 @@ pub fn mv(input_str: &str){
         } else {
             system_call(2, prev.as_bytes());
             unsafe {
-                if ERROR == false {
-                    system_call(3, updated.as_bytes());
+                if ERROR == true {
+                    return;
                 }
+                system_call(3, updated.as_bytes());
                 if ERROR == true {
                     system_call(3, prev.as_bytes());
                 }

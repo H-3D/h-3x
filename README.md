@@ -37,14 +37,14 @@ H-3X is a minimalist operating system built in Rust, designed for educational ex
 
 - `architecture`: Displays the system architecture (x86_64).
 - `bootloader`: Information about the bootloader (bootloader v0.9 crate).
+- `buffer`: Buffer Text Editor.
 - `calculator`: Interactive calculator mode for basic arithmetic operations.
 - `clear`: Clears the screen.
 - `color [color]`: Changes the text color.
 - `cpu`: Displays the CPU brand string.
 - `delay`: Sleeps for a set duration (for testing purposes).
 - `echo [message]`: Echoes a message.
-- `flix`: Buffer Text Editor.
-- `flox`: Ephemeral Text Editor.
+- `ephemeral`: Ephemeral Text Editor.
 - `halt`: Halts the CPU.
 - `help`: Lists all available commands.
 - `info`: Displays system information.

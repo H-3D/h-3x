@@ -22,6 +22,43 @@ pub fn bootloader() {
     println!("bootloader v0.9 crate");
 }
 
+pub fn buffer() {
+    clear();
+    unsafe {
+        print!("{}", core::str::from_utf8_unchecked(BUFFER));
+    }
+    loop {
+        let character = keyboard_buffer::read_char();
+        if character == '\\' {
+            screen();
+            break;
+        }
+        if character == '/' {
+            clear();
+            println!();
+        }
+        if character != '\0' && character != '/' {
+            print!("{}", character);
+        }
+    }
+    clear();
+    println!();
+}
+
+pub fn screen() {
+    static mut VGA: [u8; VGA_WIDTH * VGA_HEIGHT] = [0; VGA_WIDTH * VGA_HEIGHT];
+    unsafe {
+        for row in 0..VGA_HEIGHT {
+            for col in 0..VGA_WIDTH {
+                let index = row * VGA_WIDTH + col;
+                let char_cell = *VGA_BUFFER.offset(index as isize);
+                VGA[index] = (char_cell & 0xFF) as u8;
+            }
+        }
+        BUFFER = &VGA;
+    }
+}
+
 pub fn calculator() {
     clear();
     loop {
@@ -217,44 +254,7 @@ pub fn echo(input: &str) {
     println!("{}", input);
 }
 
-pub fn flix() {
-    clear();
-    unsafe {
-        print!("{}", core::str::from_utf8_unchecked(BUFFER));
-    }
-    loop {
-        let character = keyboard_buffer::read_char();
-        if character == '\\' {
-            screen();
-            break;
-        }
-        if character == '/' {
-            clear();
-            println!();
-        }
-        if character != '\0' && character != '/' {
-            print!("{}", character);
-        }
-    }
-    clear();
-    println!();
-}
-
-pub fn screen() {
-    static mut VGA: [u8; VGA_WIDTH * VGA_HEIGHT] = [0; VGA_WIDTH * VGA_HEIGHT];
-    unsafe {
-        for row in 0..VGA_HEIGHT {
-            for col in 0..VGA_WIDTH {
-                let index = row * VGA_WIDTH + col;
-                let char_cell = *VGA_BUFFER.offset(index as isize);
-                VGA[index] = (char_cell & 0xFF) as u8;
-            }
-        }
-        BUFFER = &VGA;
-    }
-}
-
-pub fn flox() {
+pub fn ephemeral() {
     clear();
     loop {
         let character = keyboard_buffer::read_char();
@@ -283,7 +283,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("architecture\nbootloader\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nflix\nflox\nhalt\nhelp\ninfo\nls\nmanual\nmv [previous text] [updated text]\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("architecture\nbootloader\nbuffer\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nephemeral\nhalt\nhelp\ninfo\nls\nmanual\nmv [previous text] [updated text]\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -306,14 +306,14 @@ pub fn info() {
 pub fn manual() {
     println!("architecture: Displays the system architecture (x86_64).
 bootloader: Information about the bootloader (bootloader v0.9 crate).
+buffer: Buffer Text Editor.
 calculator: Interactive calculator mode.
 clear: Clears the screen.
 color [color]: Changes the text color.
 cpu: Displays the CPU brand string.
 delay: Sleeps for a set duration (for testing purposes).
 echo [message]: Echoes a message.
-flix: Buffer Text Editor.
-flox: Ephemeral Text Editor.
+ephemeral: Ephemeral Text Editor.
 halt: Halts the CPU.
 help: Lists all available commands.
 info: Displays system information.

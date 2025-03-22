@@ -42,7 +42,7 @@ H-3X is a minimalist operating system built in Rust, designed for educational ex
 - `clear`: Clears the screen.
 - `color [color]`: Changes the text color.
 - `cpu`: Displays the CPU brand string.
-- `delay`: Sleeps for a set duration (for testing purposes).
+- `delay [cycles]`: Sleeps for the specified number of cycles.
 - `echo [message]`: Echoes a message.
 - `ephemeral`: Ephemeral Text Editor.
 - `halt`: Halts the CPU.

@@ -246,8 +246,21 @@ pub fn cpu() {
     }
 }
 
-pub fn delay() {
-    for _ in 0..10_000_000 {}
+pub fn delay(cycles: &str) {
+    match cycles.parse::<u64>() {
+        Ok(cycles) => {
+            unsafe {
+                ERROR = false;
+            }
+            for _ in 0..cycles {}
+        }
+        Err(_) => {
+            unsafe {
+                ERROR = true;
+            }
+            println!("ERROR: Invalid number of cycles");
+        }
+    }
 }
 
 pub fn echo(input: &str) {
@@ -283,7 +296,7 @@ pub fn halt() {
 }
 
 pub fn help() {
-    println!("architecture\nbootloader\nbuffer\ncalculator\nclear\ncolor [color]\ncpu\ndelay\necho [message]\nephemeral\nhalt\nhelp\ninfo\nls\nmanual\nmv [previous text] [updated text]\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
+    println!("architecture\nbootloader\nbuffer\ncalculator\nclear\ncolor [color]\ncpu\ndelay [cycles]\necho [message]\nephemeral\nhalt\nhelp\ninfo\nls\nmanual\nmv [previous text] [updated text]\npurge\nreboot\nrm [text]\ntime\ntouch [text]\nuptime\nvendor\nversion");
 }
 
 pub fn info() {
@@ -311,7 +324,7 @@ calculator: Interactive calculator mode.
 clear: Clears the screen.
 color [color]: Changes the text color.
 cpu: Displays the CPU brand string.
-delay: Sleeps for a set duration (for testing purposes).
+delay [cycles]: Sleeps for the specified number of cycles.
 echo [message]: Echoes a message.
 ephemeral: Ephemeral Text Editor.
 halt: Halts the CPU.
